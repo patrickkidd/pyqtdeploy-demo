@@ -1,0 +1,5 @@
+.DS_Store*
+*~
+sysroot-*
+.env
+*.code-workspace
