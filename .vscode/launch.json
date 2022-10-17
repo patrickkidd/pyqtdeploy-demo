@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "env": {
+            "--env": {
                 "PYTHONPATH": "${workspaceFolder}/site-packages"
             }
         },
@@ -23,7 +23,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "args": [],
-            "env": {
+            "--env": {
                 "PYTHONPATH": "${workspaceFolder}/site-packages"
             }
         }

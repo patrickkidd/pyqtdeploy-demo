@@ -10,7 +10,7 @@ class CPythonOnlyComponent(Component):
     provides = {
         '_cpythononly': ExtensionModule(
             source=[
-                "../../cpythononly/_cpythononly.cpp",
+                "../../../cpythononly/_cpythononly.cpp",
             ]
         )
     }

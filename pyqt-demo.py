@@ -10,35 +10,6 @@ import sys
 import sysconfig
 import os.path, sys, logging
 
-# try:
-#     import pdytools # only exists for app bundle
-#     IS_BUNDLE = True
-# except:
-#     import os.path
-#     IS_BUNDLE = False
-
-# if not IS_BUNDLE:
-
-#         import importlib.util
-#         import sys, site
-
-#         def import_from_path(module_name, fpath):
-#             spec = importlib.util.spec_from_file_location(module_name, fpath)
-#             module = importlib.util.module_from_spec(spec)
-#             sys.modules[module_name] = module
-#             spec.loader.exec_module(module)
-#             return module
-
-#         sitepackages_path = site.getsitepackages()
-#         project_root = os.path.dirname(__file__)
-#         for path in list(sys.path):
-#             if os.path.isdir(path) and os.path.normpath(path) == project_root:
-#                 sys.path.remove(path)
-
-#         # Add path to 
-#         cpythononly_path = os.path.join(familydiagram_path, 'cpythononly', 'build', '_cpythononly')
-#         sys.path.insert(0, cpythononly_path)
-
 
 from PyQt5.QtCore import PYQT_VERSION_STR, QT_VERSION_STR, QFile, QIODevice
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
