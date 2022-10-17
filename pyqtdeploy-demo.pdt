@@ -9,7 +9,7 @@ is_console = false
 is_bundle = false
 name = ""
 qmake_configuration = ""
-script = "pyqt-demo.py"
+script = "pyqtdeploy-demo.py"
 syspath = ""
 
 [Application.Package]

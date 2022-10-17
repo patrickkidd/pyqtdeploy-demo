@@ -203,7 +203,7 @@ def get_source_code_using_qt():
 
     # Getting the path name of the embedded source file this way means we don't
     # need to know the path separator.
-    qf = QFile(data.__file__.replace('__init__.pyo', 'pyqt-demo.py.dat'))
+    qf = QFile(data.__file__.replace('__init__.pyo', 'the_divine_comedy.txt'))
 
     qf.open(QIODevice.ReadOnly | QIODevice.Text)
     source = qf.readAll()

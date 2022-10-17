@@ -1,0 +1,22 @@
+[build-system]
+requires = [ "sip >=5, <6" ]
+requires-dist = "PyQt5 (>=5.15)"
+build-backend = "sipbuild.api"
+
+[tool.sip]
+abi-version = "12.8"
+project-factory = "pyqtbuild:PyQtProject"
+
+# Specify the PEP 566 metadata for the project.
+[tool.sip.metadata]
+name = "_cpythonplusqt"
+requires-dist = "PyQt5 (>=5.15)"
+
+[tool.sip.project]
+verbose = true
+
+[tool.sip.bindings._cpythonplusqt]
+headers = [ "_cpythonplusqt.h" ]
+sources = [ "_cpythonplusqt.cpp"]
+qmake-QT = ["gui", "widgets"]
+include-dirs = ["."]
