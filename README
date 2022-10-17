@@ -26,9 +26,11 @@ Changes To Original pyqt-demo Concept
 - Renamed `data/pyqt-demo.py.dat` to `data/the_divine_comedy.txt`
     - Re-using the source file is helpful for the running demo but makes it
         harder to understand how the project is organized.
+- Moved ./sysroot.toml to ./sysroot/sysroot.toml
 - Added ./Qt.py component plugin to patch Qt-5.15+ on macOS.
 - Added ./Qt.py, ./OpenSSL.py, ./python.py component plugins to allow for concurrent builds.
 - Added ./cpythononly, ./cpythononly.py for python+cpython only sip extension.
+- Added ./cpythonplusqt, ./cpythonplusqt.py for python+cpython+qt sip extension.
 
 Problems Discovered in Chronological Order (base pyqt-demo)
 ----------------------------------------------------------------------------------
