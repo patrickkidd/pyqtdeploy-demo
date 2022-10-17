@@ -5,6 +5,5 @@ sysroot-*
 *.code-workspace
 build-*
 .env
-.venv
 .vscode/settings.json
 cpythononly/build

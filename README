@@ -1,16 +1,26 @@
 pyqtdeploy-demo
 ==================================================================================
-This project is an effort a non-happy path demo for pyqtdeploy. There can be a
-number of problems getting a project up and running with pyqtdeploy. These problems
-can be difficult to troubleshoot. This project is meant to track some common
-problems in pyqtdeploy and associated python extensions modules, demonstrate
-solutions to them, and serve as an example for non-straightfoward pyqtdeploy
-project elements listed below under "Goals". like including a sip/pyqt module, third-party python+cpython module,
-etc.
+This project is an effort at a non-happy path demo for pyqtdeploy. As with all
+python deployment tools, there can be a number of problems getting a project up
+and running with pyqtdeploy. These problems can be difficult to troubleshoot. This
+project is meant to track some common problems using pyqtdeploy and associated python
+extensions modules, demonstrate solutions to them, and serve as an example for
+non-straightfoward pyqtdeploy project elements listed below under the "Goals"
+section below.
+
+Minimal TLDR; To Get Up And Running
+----------------------------------------------------------------------------------
+- Some Python 3.10.* with pipenv
+```
+pyenv install 3.10.6
+pyenv shell 3.10.6
+pip install pipenv
+pipenv install
+```
 
 Goals: 
 ----------------------------------------------------------------------------------
-- Provide for patching Qt before build.
+- Patch Qt before build.
 - Include a custom pure sip/CPython+Python extension.
 - Include a custom sip/CPython+Python extension that extends Qt.
 - Include python+pyqt application code
@@ -32,7 +42,7 @@ Changes To Original pyqt-demo Concept
 - Added ./cpythononly, ./cpythononly.py for python+cpython only sip extension.
 - Added ./cpythonplusqt, ./cpythonplusqt.py for python+cpython+qt sip extension.
 
-Problems Discovered in Chronological Order (base pyqt-demo)
+List of Problems Discovered in Chronological Order for Base pyqt-demo
 ----------------------------------------------------------------------------------
 - Prerequisite python environment?
     - `pip install sip, pyqt5, pyqt-builder`
