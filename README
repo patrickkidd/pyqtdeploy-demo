@@ -8,7 +8,7 @@ extensions modules, demonstrate solutions to them, and serve as an example for
 non-straightfoward pyqtdeploy project elements listed below under the "Goals"
 section below.
 
-Minimal TLDR; Setup Environment
+TLDR; Setup Environment
 ----------------------------------------------------------------------------------
 ```
 # Local python environment
@@ -18,13 +18,13 @@ pip install pipenv
 pipenv install
 ```
 
-Minimal TLDR; Develop/Debug Application
+TLDR; Develop/Debug Application
 ----------------------------------------------------------------------------------
 ```
 python pyqtdeploy-demo.py
 ```
 
-Minimal TLDR; To Build Application
+TLDR; To Build Application
 ----------------------------------------------------------------------------------
 ```
 # Build sysroot
