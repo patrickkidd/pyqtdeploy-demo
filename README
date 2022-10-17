@@ -21,10 +21,12 @@ pipenv install
 TLDR; Develop/Debug Application
 ----------------------------------------------------------------------------------
 ```
+cd cpythononly && sip-install
+cd cpythonplusqt && sip-install
 python pyqtdeploy-demo.py
 ```
 
-TLDR; To Build Application
+TLDR; Build Application
 ----------------------------------------------------------------------------------
 ```
 # Build sysroot
