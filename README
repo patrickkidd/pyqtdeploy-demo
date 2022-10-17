@@ -10,7 +10,7 @@ etc.
 
 Goals: 
 ----------------------------------------------------------------------------------
-- Patch Qt before build.
+- Provide for patching Qt before build.
 - Include a custom pure sip/CPython+Python extension.
 - Include a custom CPython+Python extension that extends Qt
 - Include python+pyqt application code
@@ -19,6 +19,15 @@ Goals:
 - Be able to run un-deployed application via source for development.
 - Copy-pastable TLDR commands to get a working app binary (if possible)
     - Include any necessary changes to sip/pyqt/pyqtbuilder/etc extension code.
+
+Changes To Original pyqt-demo Concept
+----------------------------------------------------------------------------------
+- Renamed `data/pyqt-demo.py.dat` to `data/the_divine_comedy.txt`
+    - Re-using the source file is helpful for the running demo but makes it
+        harder to understand how the project is organized.
+- Added ./Qt.py component plugin to patch Qt-5.15+ on macOS.
+- Added ./Qt.py, ./OpenSSL.py, ./python.py component plugins to allow for concurrent builds.
+- Added ./cpythononly, ./cpythononly.py for python+cpython only sip extension.
 
 Problems Discovered in Chronological Order (base pyqt-demo)
 ----------------------------------------------------------------------------------
@@ -63,50 +72,4 @@ Problems Discovered in Chronological Order (base pyqt-demo)
             File ":/importlib/resources.pyo", line 46, in open_binary
         SystemError: <class 'pdytools.qrcresource'> returned NULL without setting an exception
         - Had to read code for `pdytools`
-
-Changes To Original pyqt-demo Concept
-----------------------------------------------------------------------------------
-- Renamed `data/pyqt-demo.py.dat` to `data/the_divine_comedy.txt`
-    - Re-using the source file is helpful for the running demo but makes it
-        harder to understand how the project is organized.
-- Added ./Qt.py component plugin to patch Qt-5.15+ on macOS.
-
-
-The Original pyqt-demo README
-==================================================================================
-
-This directory contains a simple widget-based demonstration application
-(pyqt-demo.py) that will build on all supported target platforms.  When run it
-displays various pieces of information about what is included in the
-application.
-
-TLDR For Building on macOS
-(NOTE: Inferring basic usage of pyqtdeploy-* from scripts, etc is cumbersome
-for new people, and historically the api/concepts change often enough that older
-uses have to do this too. TLDR's for common cookbook examples can help with this.)
-----------------------------------------------------------------------------------
-export PATH=$PATH:<PATH_TO_QMAKE_EXE>
-pyqtdeploy-sysroot --target macosx sysroot.toml
-pyqtdeploy-build --target macosx pyqt-demo.pdt
-qmake
-
-
-Building using build-demo.py
-----------------------------------------------------------------------------------
-The build-demo.py will first build a sysroot (using the specification in
-sysroot.toml) and then build the application itself.
-
-build-demo.py will not build a sysroot if it finds an existing one.  The
-'--build-sysroot' option to build-demo.py will rebuild the sysroot even if one
-already exists.
-
-By default build-demo.py will build a native application.  On macOS the
-'--target' option can be used to build applications for iOS and Android.  It
-should also be possible to build Android applications on Windows and Linux but
-this isn't tested.
-
-build-demo.py will download the source code for the different components
-(Python, OpenSSL, Qt, SIP, PyQt etc.) automatically.  However for iOS and
-Android targets Qt must be installed using the binary installers from The Qt
-Company.  The '--qmake' option must be used to specify the full path of the
-qmake executable in the Qt installation.
+- Adding cpythononly to packages in pyqtdeploy project didn't include sip cpp module sources.
