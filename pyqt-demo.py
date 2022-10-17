@@ -187,7 +187,7 @@ def get_source_code():
         except ImportError:
             source = get_source_code_using_qt()
         else:
-            source = read_text('data', 'pyqt-demo.py.dat')
+            source = read_text('data', 'the_divine_comedy.txt')
 
     return source
 

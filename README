@@ -1,8 +1,98 @@
+pyqtdeploy-demo
+==================================================================================
+This project is an effort a non-happy path demo for pyqtdeploy. There can be a
+number of problems getting a project up and running with pyqtdeploy. These problems
+can be difficult to troubleshoot. This project is meant to track some common
+problems in pyqtdeploy and associated python extensions modules, demonstrate
+solutions to them, and serve as an example for non-straightfoward pyqtdeploy
+project elements listed below under "Goals". like including a sip/pyqt module, third-party python+cpython module,
+etc.
+
+Goals: 
+----------------------------------------------------------------------------------
+- Patch Qt before build.
+- Include a custom pure sip/CPython+Python extension.
+- Include a custom CPython+Python extension that extends Qt
+- Include python+pyqt application code
+    - Import and use all included custom sip extensions.
+    - Include png resource files in application code.
+- Be able to run un-deployed application via source for development.
+- Copy-pastable TLDR commands to get a working app binary (if possible)
+    - Include any necessary changes to sip/pyqt/pyqtbuilder/etc extension code.
+
+Problems Discovered in Chronological Order (base pyqt-demo)
+----------------------------------------------------------------------------------
+- Prerequisite python environment?
+    - `pip install sip, pyqt5, pyqt-builder`
+    - Have to make a choice for venv, choosing pipenv.
+        - ** Created Pipfile, .venv dir to house venv in project dir.
+- Why build-demo.py over just TLDR copy-pasta commands?
+    - pyqtdeploy-sysroot, pyqtdeploy-build, cd build-macos-64 && qmake, make -j16
+    - Could see as instructive example but can be unclear if it's necessary
+    - Could see helpful to copy pyqt-demo.py.dat, but why not just do that in the release tarball?
+    - Can also obscure underlying use of executables, basic sip/pyqtdeploy-* concepts.
+- Building sysroot (pyqtdeploy-sysroot)
+    - took two days with some experience with Qt, PyQt*
+    - Always recommend --verbose for pyqtdeploy-* to troubleshoot inevitable errors
+    - pyqtdeploy-sysroot --verbose sysroot.toml
+    - troubleshooting build errors is timeconsuming without option for parallel builds
+        - ** Added PYQTDEPLOY_SYSROOT_JOBS env var to `pyqtdeploy` and `pyqtbuild`
+    - Compile error in Qt-5.15.2-6 on macos: https://github.com/conan-io/conan-center-index/blob/master/recipes/qt/6.x.x/patches/dece6f5.patch
+        - Had to move `#include <CoreGraphics/CGColorSpace.h>` to first include in file.
+        - Had to:
+            1. Create new archive qt-everywhere-src-5.15.6-patched.tar.xz
+            2. Create debuggable pythons script version of pyqtdeploy-build "exe" that
+                to step through pyqtdeploybuild_main, to understand pyqtdeploy plugin arch, etc.
+            3. Create new Qt.py in root project dir to point to new source path instead
+                of pyqtdeploy automatically downloading buggy source tarball.
+- Building qmake project (pyqtdeploy-build)
+    - Worked out of the box
+- Generating makefiles (qmake)
+    - Run w/ relative path to qmake in sysroot: ./sysroot-macos-64/Qt/bin/qmake
+    - Then worked
+- Compiling project sources (make)
+    - Compiled + Linked out of the box
+- Running binary (./pyqt-demo)
+    - ERROR
+        Traceback (most recent call last):
+            File "pyqt-demo.py", line 269, in <module>
+            File "pyqt-demo.py", line 224, in create_qscintilla_code_view
+            File "pyqt-demo.py", line 190, in get_source_code
+            File ":/importlib/resources.pyo", line 103, in read_text
+            File ":/importlib/resources.pyo", line 82, in open_text
+            File ":/importlib/resources.pyo", line 46, in open_binary
+        SystemError: <class 'pdytools.qrcresource'> returned NULL without setting an exception
+        - Had to read code for `pdytools`
+
+Changes To Original pyqt-demo Concept
+----------------------------------------------------------------------------------
+- Renamed `data/pyqt-demo.py.dat` to `data/the_divine_comedy.txt`
+    - Re-using the source file is helpful for the running demo but makes it
+        harder to understand how the project is organized.
+- Added ./Qt.py component plugin to patch Qt-5.15+ on macOS.
+
+
+The Original pyqt-demo README
+==================================================================================
+
 This directory contains a simple widget-based demonstration application
 (pyqt-demo.py) that will build on all supported target platforms.  When run it
 displays various pieces of information about what is included in the
 application.
 
+TLDR For Building on macOS
+(NOTE: Inferring basic usage of pyqtdeploy-* from scripts, etc is cumbersome
+for new people, and historically the api/concepts change often enough that older
+uses have to do this too. TLDR's for common cookbook examples can help with this.)
+----------------------------------------------------------------------------------
+export PATH=$PATH:<PATH_TO_QMAKE_EXE>
+pyqtdeploy-sysroot --target macosx sysroot.toml
+pyqtdeploy-build --target macosx pyqt-demo.pdt
+qmake
+
+
+Building using build-demo.py
+----------------------------------------------------------------------------------
 The build-demo.py will first build a sysroot (using the specification in
 sysroot.toml) and then build the application itself.
 

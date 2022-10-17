@@ -1,5 +1,9 @@
 .DS_Store*
 *~
+__pycache__
 sysroot-*
-.env
 *.code-workspace
+build-*
+.env
+.venv
+.vscode/settings.json
