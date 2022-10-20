@@ -5,13 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "pyqtdeploy-demo",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "--env": {
+            "args": [],
+            "env": {
                 "PYTHONPATH": "${workspaceFolder}/site-packages"
             }
         },
@@ -23,6 +24,29 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "args": [],
+            "--env": {
+                "PYTHONPATH": "${workspaceFolder}/site-packages"
+            }
+        },
+        {
+            "name": "pyqtdeploy-build",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/pyqtdeploy-build-debuggable.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/site-packages"
+            }
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false,
             "--env": {
                 "PYTHONPATH": "${workspaceFolder}/site-packages"
             }

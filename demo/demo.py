@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-
-
-###############################################################################
-# Copyright (c) 2022 Riverbank Computing Limited.
-###############################################################################
-
-
 import sys
 import sysconfig
 import os.path, sys, logging
@@ -88,6 +80,46 @@ try:
     optional_products.append("QScintilla")
 except ImportError:
     pass
+
+
+
+def get_source_code():
+    """ Return a copy of this source code. """
+
+    if pdy_hexversion == 0:
+        # We are running in a non-deployed state so use this copy of the
+        # source.
+        with open(__file__, encoding='utf-8') as f:
+            source = f.read()
+    else:
+        # Use the resources package if the version of Python is new enough.
+        try:
+            from importlib.resources import read_text
+        except ImportError:
+            source = get_source_code_using_qt()
+        else:
+            source = read_text('demo', 'demo.py')
+
+    return source
+
+
+def get_source_code_using_qt():
+    """ Return a copy of this source code using QFile's support for embedded
+    resources.
+    """
+
+    import data
+
+    # Getting the path name of the embedded source file this way means we don't
+    # need to know the path separator.
+    qf = QFile(data.__file__.replace('__init__.pyo', 'demo.py'))
+
+    qf.open(QIODevice.ReadOnly | QIODevice.Text)
+    source = qf.readAll()
+    qf.close()
+
+    return bytes(source).decode()
+
 
 
 class SummaryView(QTreeView):
@@ -174,118 +206,60 @@ class Model(QStandardItemModel):
                 (hexversion >> 16) & 0xff, (hexversion >> 8) & 0xff)
 
 
-def get_source_code():
-    """ Return a copy of this source code. """
+class MainWidget(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent, windowTitle="PyQt Demo")
 
-    if pdy_hexversion == 0:
-        # We are running in a non-deployed state so use this copy of the
-        # source.
-        with open(__file__, encoding='utf-8') as f:
-            source = f.read()
-    else:
-        # Use the resources package if the version of Python is new enough.
-        try:
-            from importlib.resources import read_text
-        except ImportError:
-            source = get_source_code_using_qt()
+        Layout = QVBoxLayout()
+
+        header = QLabel("""<p>
+        This is a simple Python application using the PyQt bindings for the
+        cross-platform Qt application framework.
+        </p>
+        <p>
+        It will run on macOS, Linux, Windows, iOS and Android without changes to the
+        source code.
+        </p>
+        <p>
+        For more information about PyQt go to
+        <a href="https://www.riverbankcomputing.com">www.riverbankcomputing.com</a>.
+        </p>""")
+        header.setOpenExternalLinks(True)
+        header.setWordWrap(True)
+        Layout.addWidget(header)
+
+        views = QTabWidget()
+
+        summary = SummaryView(Model())
+        views.addTab(summary, "Summary")
+
+        if "QScintilla" in optional_products:
+            # Create a QScintilla based view containing a copy of this source code.
+            from PyQt5.Qsci import QsciLexerPython, QsciScintilla
+
+            view = QsciScintilla()
+            view.setReadOnly(True)
+            view.setUtf8(True)
+            view.setLexer(QsciLexerPython())
+            view.setFolding(QsciScintilla.PlainFoldStyle)
+            view.setText(get_source_code())
+
         else:
-            source = read_text('data', 'the_divine_comedy.txt')
+            # Create a QTextEdit based view containing a copy of this source code.
+            from PyQt5.QtWidgets import QTextEdit
 
-    return source
+            view = QTextEdit(readOnly=True)
+            view.setPlainText(get_source_code())
 
+        views.addTab(view, "Source Code")
 
-def get_source_code_using_qt():
-    """ Return a copy of this source code using QFile's support for embedded
-    resources.
-    """
+        Layout.addWidget(views)
 
-    import data
+        if pdy_hexversion != 0:
+            footer = QLabel("<p>It is a self-contained executable created using pyqtdeploy v%s.</p>" % Model.from_hexversion(pdy_hexversion))
+            footer.setWordWrap(True)
+            Layout.addWidget(footer)
 
-    # Getting the path name of the embedded source file this way means we don't
-    # need to know the path separator.
-    qf = QFile(data.__file__.replace('__init__.pyo', 'the_divine_comedy.txt'))
-
-    qf.open(QIODevice.ReadOnly | QIODevice.Text)
-    source = qf.readAll()
-    qf.close()
-
-    return bytes(source).decode()
+        self.setLayout(Layout)
 
 
-def create_qscintilla_code_view():
-    """ Create a QScintilla based view containing a copy of this source code.
-    """
-
-    from PyQt5.Qsci import QsciLexerPython, QsciScintilla
-
-    view = QsciScintilla()
-    view.setReadOnly(True)
-    view.setUtf8(True)
-    view.setLexer(QsciLexerPython())
-    view.setFolding(QsciScintilla.PlainFoldStyle)
-    view.setText(get_source_code())
-
-    return view
-
-
-def create_fallback_code_view():
-    """ Create a QTextEdit based view containing a copy of this source code.
-    """
-
-    from PyQt5.QtWidgets import QTextEdit
-
-    view = QTextEdit(readOnly=True)
-    view.setPlainText(get_source_code())
-
-    return view
-
-
-# Create the GUI.
-app = QApplication(sys.argv)
-
-shell = QWidget(windowTitle="PyQt Demo")
-shell_layout = QVBoxLayout()
-
-header = QLabel("""<p>
-This is a simple Python application using the PyQt bindings for the
-cross-platform Qt application framework.
-</p>
-<p>
-It will run on macOS, Linux, Windows, iOS and Android without changes to the
-source code.
-</p>
-<p>
-For more information about PyQt go to
-<a href="https://www.riverbankcomputing.com">www.riverbankcomputing.com</a>.
-</p>""")
-header.setOpenExternalLinks(True)
-header.setWordWrap(True)
-shell_layout.addWidget(header)
-
-views = QTabWidget()
-
-summary = SummaryView(Model())
-views.addTab(summary, "Summary")
-
-if "QScintilla" in optional_products:
-    code = create_qscintilla_code_view()
-else:
-    code = create_fallback_code_view()
-
-views.addTab(code, "Source Code")
-
-shell_layout.addWidget(views)
-
-if pdy_hexversion != 0:
-    footer = QLabel("<p>It is a self-contained executable created using pyqtdeploy v%s.</p>" % Model.from_hexversion(pdy_hexversion))
-    footer.setWordWrap(True)
-    shell_layout.addWidget(footer)
-
-shell.setLayout(shell_layout)
-
-# Show the GUI and interact with it.
-shell.show()
-app.exec()
-
-# All done.
-sys.exit()

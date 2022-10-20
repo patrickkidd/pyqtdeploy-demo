@@ -21,6 +21,7 @@ pipenv install
 TLDR; Develop/Debug Application
 ----------------------------------------------------------------------------------
 ```
+pipenv shell
 cd cpythononly && sip-install
 cd cpythonplusqt && sip-install
 python pyqtdeploy-demo.py
@@ -54,9 +55,6 @@ Goals:
 Changes To Original pyqt-demo Concept
 ----------------------------------------------------------------------------------
 - Renamed `pyqt-demo.py` to `pyqtdeploy-demo.py`
-- Renamed `data/pyqt-demo.py.dat` to `data/the_divine_comedy.txt`
-    - Re-using the source file is helpful for the running demo but makes it
-        harder to understand how the project is organized.
 - Moved ./sysroot.toml to ./sysroot/sysroot.toml
 - Added ./Qt.py component plugin to patch Qt-5.15+ on macOS.
 - Added ./Qt.py, ./OpenSSL.py, ./python.py component plugins to allow for concurrent builds.

@@ -13,7 +13,7 @@ script = "pyqtdeploy-demo.py"
 syspath = ""
 
 [Application.Package]
-name = "data"
+name = "demo"
 exclude = [ "*.pyc", "*.pyd", "*.pyo", "*.pyx", "*.pxi", "__pycache__", "*-info", "EGG_INFO", "*.so",]
 [[Application.Package.Content]]
 name = "__init__.py"
@@ -21,7 +21,23 @@ included = true
 is_directory = false
 
 [[Application.Package.Content]]
-name = "the_divine_comedy.txt"
+name = "app.py"
+included = true
+is_directory = false
+
+[[Application.Package.Content]]
+name = "resources"
+included = true
+is_directory = true
+
+[[Application.Package.Content.Content]]
+name = "delete-button.png"
+included = true
+is_directory = false
+
+
+[[Application.Package.Content]]
+name = "util.py"
 included = true
 is_directory = false
 
