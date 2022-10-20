@@ -12,9 +12,6 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "args": [],
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}/site-packages"
-            }
         },
         {
             "name": "pyqtdeploy-sysroot",
@@ -23,10 +20,6 @@
             "program": "${workspaceFolder}/bin/pyqtdeploy-sysroot-debuggable.py",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "args": [],
-            "--env": {
-                "PYTHONPATH": "${workspaceFolder}/site-packages"
-            }
         },
         {
             "name": "pyqtdeploy-build",
@@ -35,10 +28,6 @@
             "program": "${workspaceFolder}/bin/pyqtdeploy-build-debuggable.py",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "args": [],
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}/site-packages"
-            }
         },
         {
             "name": "Python: Current File",
@@ -47,9 +36,6 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "--env": {
-                "PYTHONPATH": "${workspaceFolder}/site-packages"
-            }
         }
     ]
 }

@@ -5,7 +5,8 @@ from PyQt5.QtWidgets import QApplication
 from . import util, demo
 
 def main():
-
+    """ Entry point called by A) pyqtdeploy bundle, and B) main.py for local dev. """
+    
     app = QApplication(sys.argv)
 
     # Ensure resources can be loaded from the source dir

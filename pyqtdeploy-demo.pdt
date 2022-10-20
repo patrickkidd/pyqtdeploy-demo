@@ -4,12 +4,12 @@ sysroots_dir = ""
 parts = [ "Python:ssl", "Python:sysconfig", "Python:zlib", "Python:importlib.resources", "PyQt:PyQt5.QtWidgets", "PyQtPurchasing:PyQt5.QtPurchasing", "PyQtDataVisualization:PyQt5.QtDataVisualization", "QScintilla:PyQt5.Qsci", "PyQt3D:PyQt5.Qt3DCore", "PyQt:PyQt5.QtNetwork", "PyQt:PyQt5.QtAndroidExtras", "PyQt:PyQt5.QtX11Extras", "PyQt:PyQt5.QtWinExtras", "PyQt:PyQt5.QtMacExtras", "PyQtNetworkAuth:PyQt5.QtNetworkAuth", "cpythononly:_cpythononly", "cpythonplusqt:_cpythonplusqt",]
 
 [Application]
-entry_point = ""
+entry_point = "app:main"
 is_console = false
 is_bundle = true
 name = ""
 qmake_configuration = ""
-script = "pyqtdeploy-demo.py"
+script = ""
 syspath = ""
 
 [Application.Package]
@@ -29,7 +29,6 @@ is_directory = false
 name = "resources"
 included = true
 is_directory = true
-
 [[Application.Package.Content.Content]]
 name = "delete-button.png"
 included = true
