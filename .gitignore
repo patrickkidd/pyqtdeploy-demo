@@ -2,7 +2,7 @@
 *~
 __pycache__
 sysroot-*
-*.code-workspace
+# *.code-workspace
 build-*
 .env
 .envrc
