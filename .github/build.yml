@@ -3,7 +3,7 @@ name: Build PyQt App with pyqtdeploy on macOS
 on:
   push:
     branches:
-      - main
+      - github
 
 jobs:
   build:
