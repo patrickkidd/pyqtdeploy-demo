@@ -1,4 +1,4 @@
-name: Build PyQt App with pyqtdeploy on macOS
+name: Build
 
 on:
   push:
@@ -50,14 +50,14 @@ jobs:
       uses: actions/cache@v2
       with:
         path: $GITHUB_WORKSPACE/sysroot
-        key: pyqtdeploy-sysroot-${{ runner.os }}-${{ hashFiles('pyqtdeploy-demo.pdy') }}
+        key: pyqtdeploy-sysroot-${{ runner.os }}-${{ hashFiles('sysroot/sysroot.toml') }}
 
     - name: Install Dependencies via Homebrew
       run: |
 
         brew update
         if [[ ! -d "/usr/local/Cellar/qt@5.15/5.15.10" ]]; then
-          brew install qt@5.15
+          brew install qt@5
         fi
         if [[ ! -d "/usr/local/Cellar/python@3.10" ]]; then
           brew install python@3.10
