@@ -65,9 +65,9 @@ jobs:
 
     - name: Build sysroot
       run: |
-        if [[ ! -d "$GITHUB_WORKSPACE/sysroot/sysroot-osx-64" ]]; then
+        if [[ ! -d "$GITHUB_WORKSPACE/sysroot/sysroot-macos-64" ]]; then
           echo $PWD
-          pyqtdeploy-sysroot --target osx-64 $GITHUB_WORKSPACE/sysroot/sysroot.toml
+          pyqtdeploy-sysroot --target macos-64 $GITHUB_WORKSPACE/sysroot/sysroot.toml
         fi
 
     - name: Build app
