@@ -1,0 +1,73 @@
+name: Build PyQt App with pyqtdeploy on macOS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    # Cache downloaded Qt bottle
+    - name: Cache Qt bottle
+      id: cache-qt-bottle
+      uses: actions/cache@v2
+      with:
+        path: ~/Library/Caches/Homebrew/qt@5.15--5.15.10.bottle.tar.gz
+        key: qt-bottle-5.15.10-${{ runner.os }}
+
+    # Cache installed Qt files
+    - name: Cache Qt installation
+      id: cache-qt-install
+      uses: actions/cache@v2
+      with:
+        path: /usr/local/Cellar/qt@5.15
+        key: qt-install-5.15.10-${{ runner.os }}-${{ hashFiles('**/Formula/qt@5.15.rb') }}
+
+    # Cache pyqtdeploy sysroot
+    - name: Cache pyqtdeploy sysroot
+      id: cache-pyqtdeploy-sysroot
+      uses: actions/cache@v2
+      with:
+        path: ~/$GITHUB_WORKSPACE/sysroot
+        key: pyqtdeploy-sysroot-${{ runner.os }}-${{ hashFiles('pyqtdeploy-demo.pdy') }}
+
+    - name: Install Dependencies via Homebrew
+      run: |
+        brew update
+        if [[ ! -d "/usr/local/Cellar/qt@5.15/5.15.10" ]]; then
+          brew install qt@5.15
+        fi
+        brew install python@3.10 sip pyqt@5
+
+    - name: Set up Environment Variables
+      run: |
+        echo "QT_PATH=/usr/local/opt/qt@5.15" >> $GITHUB_ENV
+        echo "PYTHON_PATH=/usr/local/opt/python@3.10/bin/python3.10" >> $GITHUB_ENV
+        echo "PATH=$QT_PATH/bin:/usr/local/opt/python@3.10/bin:$PATH" >> $GITHUB_ENV
+
+    - name: Install pyqtdeploy
+      run: |
+        pip3 install pyqtdeploy
+
+    - name: Build sysroot
+      run: |
+        if [[ ! -d "~/$GITHUB_WORKSPACE/sysroot" ]]; then
+          pyqtdeploy-sysroot --target osx-64 sysroot.toml
+        fi
+
+    - name: Build app
+      run: |
+        pyqtdeploy-build pyqtdeploy-demo.pdt
+
+    # Optional: If you want to upload the built app as an artifact
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: PyQtDeploy-Demo
+        path: build/osx/pyqtdeploy-demo.app
