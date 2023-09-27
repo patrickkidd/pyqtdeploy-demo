@@ -37,6 +37,13 @@ jobs:
         path: /usr/local/Cellar/qt@5.15
         key: qt-install-5.15.10-${{ runner.os }}-${{ hashFiles('**/Formula/qt@5.15.rb') }}
 
+    - name: Cache SIP
+      id: cache-sip-install
+      uses: actions/cache@v2
+      with:
+        path: /usr/local/Cellar/sip
+        key: sip-${{ runner.os }}-${{ hashFiles('**/Formula/python@3.10.rb') }}
+  
     # Cache pyqtdeploy sysroot
     - name: Cache pyqtdeploy sysroot
       id: cache-pyqtdeploy-sysroot
@@ -47,11 +54,15 @@ jobs:
 
     - name: Install Dependencies via Homebrew
       run: |
+
         brew update
         if [[ ! -d "/usr/local/Cellar/qt@5.15/5.15.10" ]]; then
-          brew install qt@5
+          brew install qt@5.15
         fi
-        brew install python@3.10 sip pyqt@5
+        if [[ ! -d "/usr/local/Cellar/python@3.10" ]]; then
+          brew install python@3.10
+        fi
+        brew install sip pyqt@5
 
     - name: Set up Environment Variables
       run: |
@@ -61,22 +72,23 @@ jobs:
 
     - name: Install pyqtdeploy
       run: |
-        pip3 install pyqtdeploy
+        pip3 install pipenv
+        pipenv install
 
-    - name: Build sysroot
-      run: |
-        if [[ ! -d "$GITHUB_WORKSPACE/sysroot/sysroot-macos-64" ]]; then
-          echo $PWD
-          pyqtdeploy-sysroot --target macos-64 $GITHUB_WORKSPACE/sysroot/sysroot.toml
-        fi
+    # - name: Build sysroot
+    #   run: |
+    #     if [[ ! -d "$GITHUB_WORKSPACE/sysroot/sysroot-macos-64" ]]; then
+    #       echo $PWD
+    #       pyqtdeploy-sysroot --target macos-64 $GITHUB_WORKSPACE/sysroot/sysroot.toml
+    #     fi
 
-    - name: Build app
-      run: |
-        pyqtdeploy-build pyqtdeploy-demo.pdt
+    # - name: Build app
+    #   run: |
+    #     pyqtdeploy-build pyqtdeploy-demo.pdt
 
-    # Optional: If you want to upload the built app as an artifact
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: PyQtDeploy-Demo
-        path: build/osx/pyqtdeploy-demo.app
+    # # Optional: If you want to upload the built app as an artifact
+    # - name: Upload Artifact
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: PyQtDeploy-Demo
+    #     path: build/osx/pyqtdeploy-demo.app

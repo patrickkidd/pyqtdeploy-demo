@@ -7,7 +7,7 @@ name = "pypi"
 sip = "*"
 pyqt5-sip = "*"
 pyqt-builder = "*"
-pyqtdeploy = "*"
+pyqtdeploy = "3.2.0"
 
 [dev-packages]
 
