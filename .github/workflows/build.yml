@@ -42,7 +42,7 @@ jobs:
       id: cache-pyqtdeploy-sysroot
       uses: actions/cache@v2
       with:
-        path: ~/$GITHUB_WORKSPACE/sysroot
+        path: $GITHUB_WORKSPACE/sysroot
         key: pyqtdeploy-sysroot-${{ runner.os }}-${{ hashFiles('pyqtdeploy-demo.pdy') }}
 
     - name: Install Dependencies via Homebrew
@@ -65,8 +65,9 @@ jobs:
 
     - name: Build sysroot
       run: |
-        if [[ ! -d "~/$GITHUB_WORKSPACE/sysroot" ]]; then
-          pyqtdeploy-sysroot --target osx-64 sysroot.toml
+        if [[ ! -d "$GITHUB_WORKSPACE/sysroot/sysroot-osx-64" ]]; then
+          echo $PWD
+          pyqtdeploy-sysroot --target osx-64 $GITHUB_WORKSPACE/sysroot/sysroot.toml
         fi
 
     - name: Build app
