@@ -13,6 +13,14 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v2
 
+    # Cache installed Python files
+    - name: Cache Python installation
+      id: cache-python-install
+      uses: actions/cache@v2
+      with:
+        path: /usr/local/Cellar/python@3.10
+        key: python-install-3.10-${{ runner.os }}-${{ hashFiles('**/Formula/python@3.10.rb') }}
+
     # Cache downloaded Qt bottle
     - name: Cache Qt bottle
       id: cache-qt-bottle
@@ -41,7 +49,7 @@ jobs:
       run: |
         brew update
         if [[ ! -d "/usr/local/Cellar/qt@5.15/5.15.10" ]]; then
-          brew install qt@5.15
+          brew install qt@5
         fi
         brew install python@3.10 sip pyqt@5
 
